@@ -93,8 +93,6 @@ public class AppointmentsModel implements IAppointmentsModel {
 		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
-
-		displayMapByOrganizer(organizerName);
 		
 		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 			AppointmentDTO request = (AppointmentDTO) entry.getValue();
@@ -162,8 +160,6 @@ public class AppointmentsModel implements IAppointmentsModel {
 			if(request.getRequestId().equals(uid)) {
 				
 				request.setComplete(true);
-				
-				displayMapByOrganizer(organizerName);
 				
 				return true; 
 				
