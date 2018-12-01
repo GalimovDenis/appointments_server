@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import com.appointments.application.dto.AppointmentDTO;
 import com.appointments.application.dto.IAppointmentDTO;
+import com.appointments.application.dto.RequestType;
 
 public interface IAppointmentsModel {
 	
@@ -19,7 +20,7 @@ public interface IAppointmentsModel {
 	 * @param organizerName unique name of organizer; 
 	 * @return AppointmentDTO request; 
 	 */
-	public AppointmentDTO pendingTo(String organizerName);  // get
+	public AppointmentDTO pendingTo(String organizerName, RequestType type);  // get
 	
 	/**
 	 * Organizer posts an updated request with appointment creation results
@@ -37,7 +38,14 @@ public interface IAppointmentsModel {
 	public AppointmentDTO answer(String organizerName, UUID uid); // get
 	
 	
-    
+	/**
+	 * Attendee reports that an event is complete;
+	 * organizerName unique name of organizer; 
+	 * @param uid Unique ID of a request to create an appointment
+	 * @return
+	 */
+	public Boolean complete(String organizerName, UUID uid); //post
+	
 
     
 

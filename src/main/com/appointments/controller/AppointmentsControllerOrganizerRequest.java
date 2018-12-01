@@ -1,6 +1,7 @@
 package com.appointments.controller;
 
 import com.appointments.application.dto.AppointmentDTO;
+import com.appointments.application.dto.RequestType;
 import com.appointments.model.IAppointmentsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ public class AppointmentsControllerOrganizerRequest implements IAppointmentsCont
 	@GetMapping(value="/create/", produces = "application/json")
     public AppointmentDTO IncomingNewEvent(@RequestParam(value = "orgname") String organizerName) {
 
-        return model.pendingTo(organizerName);
+        return model.pendingTo(organizerName, RequestType.CREATE);
 		
 	}
 
@@ -30,7 +31,7 @@ public class AppointmentsControllerOrganizerRequest implements IAppointmentsCont
     public AppointmentDTO IncomingReport(@RequestParam(value = "orgname") String organizerName) {
 		
 		// TODO Auto-generated method stub
-        return model.pendingTo(organizerName);
+        return model.pendingTo(organizerName, RequestType.READ);
 	
 	}
 
@@ -38,14 +39,14 @@ public class AppointmentsControllerOrganizerRequest implements IAppointmentsCont
 	@GetMapping(value="/update", produces = "application/json")
     public AppointmentDTO IncomingChangeEvent(@RequestParam(value = "orgname") String organizerName) {
 		// TODO Auto-generated method stub
-        return model.pendingTo(organizerName);
+        return model.pendingTo(organizerName,RequestType.UPDATE);
 	}
 
 	@Override
 	@GetMapping(value="/delete", produces = "application/json")
     public AppointmentDTO IncomingDeleteEvent(@RequestParam(value = "orgname") String organizerName) {
 		// TODO Auto-generated method stub
-        return model.pendingTo(organizerName);
+        return model.pendingTo(organizerName, RequestType.DELETE);
 	}
 
 }
