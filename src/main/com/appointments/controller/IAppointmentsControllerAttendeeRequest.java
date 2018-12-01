@@ -1,9 +1,6 @@
 package com.appointments.controller;
 
-import com.appointments.application.dto.AppointmentCreate;
-import com.appointments.application.dto.AppointmentDelete;
-import com.appointments.application.dto.AppointmentRead;
-import com.appointments.application.dto.AppointmentUpdate;
+import com.appointments.application.dto.AppointmentDTO;
 
 /**
  * Service for appointments attendee; 
@@ -12,13 +9,13 @@ import com.appointments.application.dto.AppointmentUpdate;
  *
  */
 public interface IAppointmentsControllerAttendeeRequest {
-	
-	public Boolean registerCreate(AppointmentCreate appCreate);  // post
-	
-	public Boolean registerRead (AppointmentRead appRead); // post
-	
-	public Boolean registerUpdate (AppointmentUpdate appUpdate); // post 
-	
-	public Boolean registerDelete (AppointmentDelete appDelete); 	// post
+
+    Boolean registerCreate(AppointmentDTO appCreate);  // post
+
+    Boolean registerRead(AppointmentDTO appRead); // post
+
+    Boolean registerUpdate(AppointmentDTO appUpdate); // post
+
+    Boolean registerDelete(AppointmentDTO appDelete);    // post
 	
 }

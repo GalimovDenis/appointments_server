@@ -2,7 +2,7 @@ package com.appointments.application.dto;
 
 import java.util.UUID;
 
-import com.appointments.util.daterange.IDateRange;
+import com.appointments.util.date.range.IDateRange;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,13 +14,12 @@ public abstract class TimedAppointmentDTO extends BaseAppointmentDTO implements 
 	
 	@JsonProperty(value="range", required=true)
 	private final IDateRange range;
-	
-	@Override
-	public abstract RequestType getRequestType();
-	
+		
 	@JsonCreator
-	public TimedAppointmentDTO(@JsonProperty("requestId") UUID requestId, @JsonProperty("range") IDateRange range) {
-		super(requestId);
+	public TimedAppointmentDTO(@JsonProperty("requestId") UUID requestId, 
+			@JsonProperty("range") IDateRange range,
+			@JsonProperty("requestType") RequestType requestType ) {
+		super(requestId, requestType);
 		this.range = range;
 	}
 	

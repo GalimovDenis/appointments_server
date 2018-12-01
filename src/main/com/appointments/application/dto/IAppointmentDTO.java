@@ -2,10 +2,17 @@ package com.appointments.application.dto;
 
 import java.util.UUID;
 
-import com.appointments.util.daterange.IDateRange;
+import com.appointments.util.date.range.DateRange;
+import com.appointments.util.date.range.DateRangeEmpty;
+import com.appointments.util.date.range.IDateRange;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({ @JsonSubTypes.Type(value = AppointmentDTO.class, name = "AppointmentDTO")})
 public interface IAppointmentDTO {
 	
 	public RequestType getRequestType();

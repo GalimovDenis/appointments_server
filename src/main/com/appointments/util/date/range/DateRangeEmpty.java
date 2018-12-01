@@ -1,14 +1,10 @@
-package com.appointments.util.daterange;
+package com.appointments.util.date.range;
 
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public class DateRangeEmpty implements IDateRange {
-
-	@JsonCreator
-	public DateRangeEmpty() {
-	}
 
 	@Override
 	public boolean isEmpty() {

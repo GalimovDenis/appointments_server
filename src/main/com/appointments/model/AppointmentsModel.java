@@ -8,12 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
-import com.appointments.application.dto.AppointmentCreate;
-import com.appointments.application.dto.AppointmentDelete;
-import com.appointments.application.dto.AppointmentRead;
-import com.appointments.application.dto.AppointmentUpdate;
+import com.appointments.application.dto.AppointmentDTO;
 import com.appointments.application.dto.IAppointmentDTO;
-import com.appointments.application.dto.RequestType;
 
 
 /**
@@ -31,13 +27,12 @@ public class AppointmentsModel implements IAppointmentsModel {
 	public AppointmentsModel() {
 		super();
 	}
+
 	
 	/**
-	 * Registering any appointment request in the ledger
-	 * @param appRequest
-	 * @return
+	 * Attendee tries to create event; returns that the event was put into queue; 
 	 */
-	private Boolean register(IAppointmentDTO appRequest	) {
+	public Boolean register(IAppointmentDTO appRequest	) {
 		
 		String organizerName = appRequest.getOrganizer();
 
@@ -72,52 +67,13 @@ public class AppointmentsModel implements IAppointmentsModel {
 		return mapOfPendingCreations;
 	}
 
-	/**
-	 * Attendee tries to create event; returns that the event was put into queue; 
-	 */
-	@Override
-	public Boolean registerCreate(AppointmentCreate appRequest) {	
-		
-		System.out.println(appRequest.getDateRange() == null);
-	
-		return register(appRequest);
-
-	}
-	
-	/**
-	 * Attendee tries to read event; returns that the event was put into queue; 
-	 */
-	@Override
-	public Boolean registerRead(AppointmentRead appRequest) {	
-		
-		return register(appRequest);
-
-	}
-	/**
-	 * Attendee tries to update event; returns that the event was put into queue; 
-	 */
-	@Override
-	public Boolean registerUpdate(AppointmentUpdate appRequest) {	
-		
-		return register(appRequest);
-
-	}
-	/**
-	 * Attendee tries to delete event; returns that the event was put into queue; 
-	 */
-	@Override
-	public Boolean registerDelete(AppointmentDelete appRequest) {	
-		
-		return register(appRequest);
-
-	}
 
 	
 	/**
 	 * Attendee checks if his event was created; 
 	 */
 	@Override
-	public AppointmentCreate answeredCreate(String organizerName, UUID uid) {
+	public AppointmentDTO answer(String organizerName, UUID uid) {
 		
 		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
 
@@ -126,69 +82,11 @@ public class AppointmentsModel implements IAppointmentsModel {
 		displayMapByOrganizer(organizerName);
 		
 		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.CREATE) continue; 
-			AppointmentCreate request = (AppointmentCreate) entry.getValue();
+			
+			AppointmentDTO request = (AppointmentDTO) entry.getValue();
+			
 			if (request.isResponded() == true) return request;
-		}
-		
-		return null;
-	}
-
-
-	/**
-	 * Attendee checks if his event was read; 
-	 */	
-	@Override
-	public AppointmentRead answeredRead(String organizerName, UUID uid) {
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.READ) continue; 
-			AppointmentRead request = (AppointmentRead) entry.getValue();
-			if (request.isResponded() == true) return request;
-		}
-		
-		return null;
-	}
-
-
-	/**
-	 * Attendee checks if his event was updated; 
-	 */
-	@Override
-	public AppointmentUpdate answeredUpdate(String organizerName, UUID uid) {
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.UPDATE) continue; 
-			AppointmentUpdate request = (AppointmentUpdate) entry.getValue();
-			if (request.isResponded() == true) return request;
-		}
-		
-		return null;
-	}
-
-
-	/**
-	 * Attendee checks if his event was deleted; 
-	 */
-	@Override
-	public AppointmentDelete answeredDelete(String organizerName, UUID uid) {
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.DELETE) continue; 
-			AppointmentDelete request = (AppointmentDelete) entry.getValue();
-			if (request.isResponded() == true) return request;
+			
 		}
 		
 		return null;
@@ -200,7 +98,7 @@ public class AppointmentsModel implements IAppointmentsModel {
 	 * Organiser gets events that he has to create; 
 	 */
 	@Override
-	public AppointmentCreate pendingToCreate(String organizerName) {
+	public AppointmentDTO pendingTo(String organizerName) {
 		
 		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
 
@@ -209,8 +107,7 @@ public class AppointmentsModel implements IAppointmentsModel {
 		displayMapByOrganizer(organizerName);
 		
 		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.CREATE) continue; 
-			AppointmentCreate request = (AppointmentCreate) entry.getValue();
+			AppointmentDTO request = (AppointmentDTO) entry.getValue();
 			if (request.isResponded() == false) return request;
 		}
 		
@@ -218,72 +115,11 @@ public class AppointmentsModel implements IAppointmentsModel {
 	
 	}
 	
-
-	/**
-	 * Organiser gets a request on event status;
-	 */
-	@Override
-	public AppointmentRead pendingToRead(String organizerName) {
-		
-        Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.READ) continue; 
-			AppointmentRead request = (AppointmentRead) entry.getValue();
-			if (request.isResponded() == false) return request;
-		}
-		
-		return null; 
-	}
-
-	
-
-
-	/**
-	 * Organiser gets a request on event status;
-	 */
-	@Override
-	public AppointmentUpdate pendingToUpdate(String organizerName) {
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.UPDATE) continue; 
-			AppointmentUpdate request = (AppointmentUpdate) entry.getValue();
-			if (request.isResponded() == false) return request;
-		}
-		
-		return null; 
-	}
-
-	/**
-	 * Organiser gets a request on event status;
-	 */
-	@Override
-	public AppointmentDelete pendingToDelete(String organizerName) {
-
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
-
-		if (mapOfPendingCreations.size() == 0) return null; 
-		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-			if (entry.getValue().getRequestType() != RequestType.DELETE) continue; 
-			AppointmentDelete request = (AppointmentDelete) entry.getValue();
-			if (request.isResponded() == false) return request;
-		}
-		
-		return null; 
-	}
 
 	/**
 	 * Organiser reports on event status;
 	 */
-	@Override
-	public Boolean reportCreate(AppointmentCreate appEvent) { // need generic dto or split reports; 
+	public Boolean report(IAppointmentDTO appEvent) { // need generic dto or split reports; 
 		
 		String organizerName = appEvent.getOrganizer();
 		
@@ -298,61 +134,6 @@ public class AppointmentsModel implements IAppointmentsModel {
 		return true; // unknown how to reflect successful report; 
 		
 	}
-
-	/**
-	 * Organiser reports on event status;
-	 */
-	@Override
-	public Boolean reportRead(AppointmentRead appEvent) { // need generic dto or split reports; 
-		
-		String organizerName = appEvent.getOrganizer();
-		
-		UUID UUID = appEvent.getRequestId();
-		
-		if (!appointmentsRegister.containsKey(organizerName)) { appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());}
-		
-		appointmentsRegister.get(organizerName).put(UUID, appEvent);
-				
-		return true; // unknown how to reflect successful report; 
-		
-	}
-
-	/**
-	 * Organiser reports on event status;
-	 */
-	@Override
-	public Boolean reportUpdate(AppointmentUpdate appEvent) { // need generic dto or split reports; 
-		
-		String organizerName = appEvent.getOrganizer();
-		
-		UUID UUID = appEvent.getRequestId();
-		
-		if (!appointmentsRegister.containsKey(organizerName)) { appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());}
-		
-		appointmentsRegister.get(organizerName).put(UUID, appEvent);
-				
-		return true; // unknown how to reflect successful report; 
-		
-	}
-
-	/**
-	 * Organiser reports on event status;
-	 */
-	@Override
-	public Boolean reportDelete(AppointmentDelete appEvent) { // need generic dto or split reports; 
-		
-		String organizerName = appEvent.getOrganizer();
-		
-		UUID UUID = appEvent.getRequestId();
-		
-		if (!appointmentsRegister.containsKey(organizerName)) { appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());}
-		
-		appointmentsRegister.get(organizerName).put(UUID, appEvent);
-				
-		return true; // unknown how to reflect successful report; 
-		
-	}
-
 
 
 
@@ -365,8 +146,14 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private void displayMap() {
 		//TODO:full map display
 	}
+
+
+
+
+
 
 }

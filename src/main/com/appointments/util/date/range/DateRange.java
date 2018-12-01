@@ -1,4 +1,4 @@
-package com.appointments.util.daterange;
+package com.appointments.util.date.range;
 
 import java.time.LocalDateTime;
 

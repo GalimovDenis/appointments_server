@@ -1,23 +1,20 @@
 package com.appointments.controller;
 
-import com.appointments.application.dto.AppointmentCreate;
-import com.appointments.application.dto.AppointmentDelete;
-import com.appointments.application.dto.AppointmentRead;
-import com.appointments.application.dto.AppointmentUpdate;
+import com.appointments.application.dto.AppointmentDTO;
 
 /**
  * Services organiser will reach;
  *
  */
 public interface IAppointmentsControllerOrganizerReport {
-	
-	public Boolean reportCreate(AppointmentCreate appCreate); // post
 
-	public Boolean reportRead(AppointmentRead appRead); // post
+    Boolean reportCreate(AppointmentDTO appCreate); // post
 
-	public Boolean reportUpdate(AppointmentUpdate appUpdate); // post
+    Boolean reportRead(AppointmentDTO appRead); // post
 
-	public Boolean reportDelete(AppointmentDelete appDelete); // post
+    Boolean reportUpdate(AppointmentDTO appUpdate); // post
 
-	
+    Boolean reportDelete(AppointmentDTO appDelete); // post
+
+
 }
