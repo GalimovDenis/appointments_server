@@ -78,6 +78,8 @@ public class AppointmentsModel implements IAppointmentsModel {
 	@Override
 	public Boolean registerCreate(AppointmentCreate appRequest) {	
 		
+		System.out.println(appRequest.getDateRange() == null);
+	
 		return register(appRequest);
 
 	}
