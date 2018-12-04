@@ -1,7 +1,7 @@
 package com.appointments.controller;
 
-import com.appointments.application.dto.AppointmentDTO;
-import com.appointments.application.dto.RequestType;
+import com.appointments.dto.AppointmentDTO;
+import com.appointments.dto.RequestType;
 import com.appointments.model.IAppointmentsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

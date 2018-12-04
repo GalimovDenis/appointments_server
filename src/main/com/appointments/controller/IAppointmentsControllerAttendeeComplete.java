@@ -1,7 +1,5 @@
 package com.appointments.controller;
 
-import com.appointments.application.dto.AppointmentDTO;
-
 import java.util.UUID;
 
 /**

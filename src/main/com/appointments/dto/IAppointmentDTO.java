@@ -1,9 +1,7 @@
-package com.appointments.application.dto;
+package com.appointments.dto;
 
 import java.util.UUID;
 
-import com.appointments.util.date.range.DateRange;
-import com.appointments.util.date.range.DateRangeEmpty;
 import com.appointments.util.date.range.IDateRange;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;

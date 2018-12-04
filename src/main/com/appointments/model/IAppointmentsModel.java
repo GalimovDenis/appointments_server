@@ -2,9 +2,9 @@ package com.appointments.model;
 
 import java.util.UUID;
 
-import com.appointments.application.dto.AppointmentDTO;
-import com.appointments.application.dto.IAppointmentDTO;
-import com.appointments.application.dto.RequestType;
+import com.appointments.dto.AppointmentDTO;
+import com.appointments.dto.IAppointmentDTO;
+import com.appointments.dto.RequestType;
 
 public interface IAppointmentsModel {
 	

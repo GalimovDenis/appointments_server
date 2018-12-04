@@ -1,4 +1,4 @@
-package com.appointments.application.dto;
+package com.appointments.dto;
 
 import java.util.UUID;
 
@@ -17,6 +17,20 @@ public class AppointmentDTO extends TimedAppointmentDTO implements IAppointmentD
 			@JsonProperty("range") IDateRange range,
 			@JsonProperty("requestType") RequestType requestType) {
 		super(requestId, range, requestType);
+	}
+
+	/**
+	 * Constructor for defensive copying
+	 * @param appDTO
+	 */
+	public AppointmentDTO(IAppointmentDTO appDTO) {
+		super(appDTO.getRequestId(), appDTO.getDateRange(), appDTO.getRequestType());
+		this.setAttendee(appDTO.getAttendee());
+		this.setOrganizer(appDTO.getOrganizer());
+		this.setEventId(appDTO.getEventId());
+		this.setRegistered(appDTO.isRegistered());
+		this.setResponded(appDTO.isResponded());
+		this.setComplete(appDTO.isComplete());
 	}
 	
 }

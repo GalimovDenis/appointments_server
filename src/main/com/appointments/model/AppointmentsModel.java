@@ -2,15 +2,15 @@ package com.appointments.model;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.appointments.application.dto.AppointmentDTO;
-import com.appointments.application.dto.IAppointmentDTO;
-import com.appointments.application.dto.RequestType;
+import com.appointments.dto.AppointmentDTO;
+import com.appointments.dto.IAppointmentDTO;
+import com.appointments.dto.RequestType;
+import com.appointments.repository.IAppointmentsRepo;
 
 
 /**
@@ -19,78 +19,29 @@ import com.appointments.application.dto.RequestType;
 @Component("AppointmentsModel")
 public class AppointmentsModel implements IAppointmentsModel {
 
-	/**
-	 * Ledger for storing pending events to create by user name; attendees add data into it
-	 */
-	private Map<String, Map<UUID, IAppointmentDTO>> appointmentsRegister = new ConcurrentHashMap<String, Map<UUID, IAppointmentDTO>>();
-	
+	@Autowired
+	IAppointmentsRepo appRepo;
 	
 	public AppointmentsModel() {
 		super();
 	}
 	
 
-	/**
-	 * Getting a map of requests related to concrete organizer;
-	 * @param organizerName
-	 * @return
-	 */
-	private Map<UUID, IAppointmentDTO> getOrganizerRequests(String organizerName) {
-		if (!appointmentsRegister.containsKey(organizerName)) {
-			
-			appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());
-				
-		}
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appointmentsRegister.get(organizerName);
-		return mapOfPendingCreations;
-	}
-	
-
-	
-	private void displayMapByOrganizer(String organizerName) {
-		
-		for(Entry<UUID, IAppointmentDTO> entry : appointmentsRegister.get(organizerName).entrySet()){
-			System.out.println("UUID "+entry.getKey()+" entry "+entry.getValue().toString());
-		}
-		
-	}
-	
-	@SuppressWarnings("unused")
-	private void displayMap() {
-		//TODO:full map display
-	}
-
-
-	
-	/**
-	 * Attendee tries to modify event; returns that the modification request was put into queue; 
-	 */
 	public Boolean register(IAppointmentDTO appRequest	) {
 		
 		String organizerName = appRequest.getOrganizer();
-
-		if (!appointmentsRegister.containsKey(organizerName)) {
-			
-			appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());
-				
-		}
 		
 		appRequest.setRegistered(true);
 		
-		appointmentsRegister.get(organizerName).put(appRequest.getRequestId(), appRequest);
+		appRepo.putIfAbsent(organizerName, appRequest);
 		
 		return true;
 	}
-	
 
-	/**
-	 * Organizer gets events that he has to modify; 
-	 */
 	@Override
 	public AppointmentDTO pendingTo(String organizerName, RequestType type) {
 			
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
+		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
@@ -105,30 +56,20 @@ public class AppointmentsModel implements IAppointmentsModel {
 	}
 
 
-	/**
-	 * Organizer reports on event status;
-	 */
-	public Boolean report(IAppointmentDTO appEvent) { // need generic dto or split reports; 
+	public Boolean report(IAppointmentDTO appRequest) { // need generic dto or split reports; 
 		
-		String organizerName = appEvent.getOrganizer();
+		String organizerName = appRequest.getOrganizer();
 		
-		UUID UUID = appEvent.getRequestId();
-		
-		if (!appointmentsRegister.containsKey(organizerName)) { appointmentsRegister.put(organizerName, new TreeMap<UUID, IAppointmentDTO>());}
-		
-		appointmentsRegister.get(organizerName).put(UUID, appEvent);
+		appRepo.putIfAbsent(organizerName, appRequest);
 		
 		return true; // unknown how to reflect successful report; 
 		
 	}
 
-	/**
-	 * Attendee checks if his event was modified; 
-	 */
 	@Override
 	public AppointmentDTO answer(String organizerName, UUID uid) {
 		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
+		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
@@ -149,7 +90,7 @@ public class AppointmentsModel implements IAppointmentsModel {
 
 		
 		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = getOrganizerRequests(organizerName);
+		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		

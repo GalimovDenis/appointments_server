@@ -1,6 +1,6 @@
 package com.appointments.controller;
 
-import com.appointments.application.dto.AppointmentDTO;
+import com.appointments.dto.AppointmentDTO;
 
 /**
  * Services organizer will reach;

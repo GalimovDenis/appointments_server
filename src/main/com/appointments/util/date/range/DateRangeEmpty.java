@@ -2,8 +2,6 @@ package com.appointments.util.date.range;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 public class DateRangeEmpty implements IDateRange {
 
 	@Override

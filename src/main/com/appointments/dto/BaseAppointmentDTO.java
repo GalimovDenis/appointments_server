@@ -1,4 +1,4 @@
-package com.appointments.application.dto;
+package com.appointments.dto;
 
 import java.util.UUID;
 
