@@ -38,7 +38,7 @@ public class AppointmentsControllerOrganizerRequest implements IAppointmentsCont
 	@Override
 	@GetMapping(value="/update", produces = "application/json")
     public AppointmentDTO IncomingChangeEvent(@RequestParam(value = "orgname") String organizerName) {
-		// TODO Auto-generated method stub
+	
         return model.pendingTo(organizerName,RequestType.UPDATE);
 	}
 
