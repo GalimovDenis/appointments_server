@@ -52,7 +52,7 @@ public interface IAppointmentsModel {
 	public Boolean complete(String organizerName, UUID eventID, int sequence); //post
 	
     
-
+	public void clear();
 
     
 

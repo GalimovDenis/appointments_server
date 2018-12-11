@@ -7,10 +7,12 @@ import com.appointments.dto.IAppointmentDTO;
 
 public interface IAppointmentsRepo {
 	
+	public void clear();
+	
 	/**
 	 * Puts a request into repository
 	 */
-	public IAppointmentDTO putIfAbsent(String organizerName, IAppointmentDTO appDTO);
+	public boolean putIfAbsent(String organizerName, IAppointmentDTO appDTO);
 	
 	/**
 	 * Getting a map of requests related to concrete organizer;

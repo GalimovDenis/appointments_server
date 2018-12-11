@@ -17,22 +17,31 @@ public class AppointmentsRepo implements IAppointmentsRepo {
 	private Map<String, Map<RequestKey, IAppointmentDTO>> appointmentsRegister = new ConcurrentHashMap<String, Map<RequestKey, IAppointmentDTO>>();
 
 	@Override
-	public IAppointmentDTO putIfAbsent(String organizerName, IAppointmentDTO appDTO) {
+	public boolean putIfAbsent(String organizerName, IAppointmentDTO appDTO) {
 
 		if (!appointmentsRegister.containsKey(organizerName)) {
 
-			appointmentsRegister.put(organizerName, new TreeMap<RequestKey, IAppointmentDTO>());
+			appointmentsRegister.put(organizerName, new ConcurrentHashMap<RequestKey, IAppointmentDTO>());
 
 		}
 		
-		System.out.println("Seq+"+appDTO.getSequence());
-		System.out.println("Typ+"+appDTO.getRequestType());
-		System.out.println("Uid+"+appDTO.getEventId());
-		
 		//limited to one type request per event?
 		RequestKey rk = new RequestKey(appDTO.getSequence(), appDTO.getRequestType(), UUID.fromString(appDTO.getEventId()));
+	
+		IAppointmentDTO previousDTO = appointmentsRegister.get(organizerName).get(rk);
 		
-		return appointmentsRegister.get(organizerName).put(rk, appDTO);
+		if(previousDTO == null) {
+			appointmentsRegister.get(organizerName).put(rk, appDTO);
+			return true;
+		}
+		
+		if(previousDTO.equals(appDTO)) {
+			return false;
+		}
+		
+		appointmentsRegister.get(organizerName).put(rk, appDTO);
+		return true;
+		
 	}
 
 
@@ -41,7 +50,7 @@ public class AppointmentsRepo implements IAppointmentsRepo {
 
 		if (!appointmentsRegister.containsKey(organizerName)) {
 
-			appointmentsRegister.put(organizerName, new TreeMap<RequestKey, IAppointmentDTO>());
+			appointmentsRegister.put(organizerName, new ConcurrentHashMap<RequestKey, IAppointmentDTO>());
 
 		}
 
@@ -94,6 +103,12 @@ public class AppointmentsRepo implements IAppointmentsRepo {
 	@SuppressWarnings("unused")
 	private void displayMap() {
 		//TODO:full map display
+	}
+
+
+	@Override
+	public void clear() {
+		appointmentsRegister = new ConcurrentHashMap<String, Map<RequestKey, IAppointmentDTO>>();
 	}
 
 

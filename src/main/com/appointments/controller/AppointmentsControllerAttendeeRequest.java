@@ -24,12 +24,10 @@ public class AppointmentsControllerAttendeeRequest implements IAppointmentsContr
 	@Override
 	@PostMapping(produces = "application/json")
     public ResponseEntity<Boolean> register(@RequestBody AppointmentDTO appCreate) {
-
-		System.out.println("INCOMING" + appCreate);
-		
+	
 		Boolean reg = model.register(appCreate);
 		
-		HttpStatus status = reg == true ? HttpStatus.ACCEPTED : HttpStatus.NOT_ACCEPTABLE ;
+		HttpStatus status = reg == true ? HttpStatus.ACCEPTED : HttpStatus.ALREADY_REPORTED;
 		
 		return new ResponseEntity<Boolean>(reg, status);
 		

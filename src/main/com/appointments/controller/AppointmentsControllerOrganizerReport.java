@@ -3,45 +3,29 @@ package com.appointments.controller;
 import com.appointments.dto.AppointmentDTO;
 import com.appointments.model.IAppointmentsModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-@RestController  
-@RequestMapping(value="/organizer/report")
+@RestController
+@RequestMapping(value = "/organizer/report")
 public class AppointmentsControllerOrganizerReport implements IAppointmentsControllerOrganizerReport {
 
-	@Autowired 
-	private IAppointmentsModel model;  //https://stackoverflow.com/a/52526618
+	@Autowired
+	private IAppointmentsModel model; // https://stackoverflow.com/a/52526618
 
 	@Override
-	@PostMapping(value="/create", produces = "application/json")
-    public Boolean reportCreate(@RequestBody AppointmentDTO appCreate) {
-		// TODO Auto-generated method stub
-        return model.report(appCreate);
-	}
+	@PostMapping(produces = "application/json")
+	public ResponseEntity<Boolean> report(@RequestBody AppointmentDTO appCreate) {
 
-	@Override
-	@PostMapping(value="/read", produces = "application/json")
-    public Boolean reportRead(@RequestBody AppointmentDTO appRead) {
-		// TODO Auto-generated method stub
-        return model.report(appRead);
-	}
+		Boolean reg = model.report(appCreate);
 
-	@Override
-	@PostMapping(value="/update", produces = "application/json")
-    public Boolean reportUpdate(@RequestBody AppointmentDTO appUpdate) {
-		// TODO Auto-generated method stub
-        return model.report(appUpdate);
-	}
+		HttpStatus status = reg == true ? HttpStatus.ACCEPTED : HttpStatus.ALREADY_REPORTED;
 
-	@Override
-	@PostMapping(value="/delete", produces = "application/json")
-    public Boolean reportDelete(@RequestBody AppointmentDTO appDelete) {
-		// TODO Auto-generated method stub
-        return model.report(appDelete);
+		return new ResponseEntity<Boolean>(reg, status);
 	}
 
 }

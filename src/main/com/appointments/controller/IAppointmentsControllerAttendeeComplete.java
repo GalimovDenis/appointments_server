@@ -10,5 +10,6 @@ public interface IAppointmentsControllerAttendeeComplete {
 	
     Boolean eventComplete(String organiserName, UUID eventUUID, int sequence);  // post
 
+    void clear();
 
 }

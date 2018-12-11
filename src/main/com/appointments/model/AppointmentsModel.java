@@ -34,9 +34,8 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 		appRequest.setRegistered(true);
 		
-		appRepo.putIfAbsent(organizerName, appRequest);
+		return appRepo.putIfAbsent(organizerName, appRequest);
 		
-		return true;
 	}
 
 	@Override
@@ -64,9 +63,9 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 		String organizerName = appRequest.getOrganizer();
 		
-		appRepo.putIfAbsent(organizerName, appRequest);
+		return appRepo.putIfAbsent(organizerName, appRequest);
 		
-		return true; // unknown how to reflect successful report; 
+		// unknown how to reflect successful report; 
 		
 	}
 
@@ -80,7 +79,7 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 			
-			if(entry.getKey().getEventID()!=eventID) continue;
+			if(!entry.getKey().getEventID().equals(eventID)) continue;
 			
 			if(entry.getKey().getSequence()!=sequence) continue;
 
@@ -103,10 +102,10 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 
-			if(entry.getKey().getEventID()!=eventID) continue;
+			if(!entry.getKey().getEventID().equals(eventID)) continue;
 			
 			if(entry.getKey().getSequence()!=sequence) continue;
-			
+	
 			IAppointmentDTO request = entry.getValue();
 					
 			request.setComplete(true);
@@ -116,6 +115,12 @@ public class AppointmentsModel implements IAppointmentsModel {
 		}
 		
 		return null;
+	}
+
+
+	@Override
+	public void clear() {
+		appRepo.clear();
 	}
 
 
