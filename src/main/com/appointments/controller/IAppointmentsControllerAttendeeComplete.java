@@ -8,7 +8,7 @@ import java.util.UUID;
  */
 public interface IAppointmentsControllerAttendeeComplete {
 	
-    Boolean eventComplete(String organiserName, UUID eventUUID);  // post
+    Boolean eventComplete(String organiserName, UUID eventUUID, int sequence);  // post
 
 
 }

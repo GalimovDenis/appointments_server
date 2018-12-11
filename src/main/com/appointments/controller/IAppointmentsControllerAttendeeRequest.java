@@ -1,5 +1,7 @@
 package com.appointments.controller;
 
+import org.springframework.http.ResponseEntity;
+
 import com.appointments.dto.AppointmentDTO;
 
 /**
@@ -10,12 +12,6 @@ import com.appointments.dto.AppointmentDTO;
  */
 public interface IAppointmentsControllerAttendeeRequest {
 
-    Boolean registerCreate(AppointmentDTO appCreate);  // post
-
-    Boolean registerRead(AppointmentDTO appRead); // post
-
-    Boolean registerUpdate(AppointmentDTO appUpdate); // post
-
-    Boolean registerDelete(AppointmentDTO appDelete);    // post
+	ResponseEntity<Boolean> register(AppointmentDTO appCreate);  // post
 	
 }

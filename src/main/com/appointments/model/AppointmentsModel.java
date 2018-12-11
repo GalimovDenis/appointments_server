@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.appointments.application.entity.RequestKey;
 import com.appointments.dto.AppointmentDTO;
 import com.appointments.dto.IAppointmentDTO;
 import com.appointments.dto.RequestType;
@@ -41,13 +42,16 @@ public class AppointmentsModel implements IAppointmentsModel {
 	@Override
 	public AppointmentDTO pendingTo(String organizerName, RequestType type) {
 			
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+			
+			if(!entry.getKey().getType().equals(type)) continue;
+			
 			AppointmentDTO request = (AppointmentDTO) entry.getValue();
-			if (!request.getRequestType().equals(type)) continue; 
+			
 			if (request.isResponded() == false) return request;
 		}
 		
@@ -66,15 +70,20 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 	}
 
+	///can send in a read request when you need an update request;
 	@Override
-	public AppointmentDTO answer(String organizerName, UUID uid) {
+	public AppointmentDTO answer(String organizerName, UUID eventID, int sequence) {
 		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 			
+			if(entry.getKey().getEventID()!=eventID) continue;
+			
+			if(entry.getKey().getSequence()!=sequence) continue;
+
 			AppointmentDTO request = (AppointmentDTO) entry.getValue();
 			
 			if (request.isResponded() == true && request.isComplete() == false) return request; // needs to destroy complete requests; 
@@ -84,27 +93,26 @@ public class AppointmentsModel implements IAppointmentsModel {
 		return null;
 	}
 
-
+	// two update requests? can't use RequestUID bc each must be idempotent; can't use Key+Event bc they'll be the same; 
 	@Override
-	public Boolean complete(String organizerName, UUID uid) {
+	public Boolean complete(String organizerName, UUID eventID, int sequence) {
 
-		
-		
-		Map<UUID, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<UUID, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
-				
-			IAppointmentDTO request = entry.getValue();
+		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+
+			if(entry.getKey().getEventID()!=eventID) continue;
 			
-			if(request.getRequestId().equals(uid)) {
+			if(entry.getKey().getSequence()!=sequence) continue;
+			
+			IAppointmentDTO request = entry.getValue();
+					
+			request.setComplete(true);
 				
-				request.setComplete(true);
-				
-				return true; 
-				
-			}			
+			return true; 
+						
 		}
 		
 		return null;

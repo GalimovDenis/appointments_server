@@ -1,8 +1,8 @@
 package com.appointments.repository;
 
 import java.util.Map;
-import java.util.UUID;
 
+import com.appointments.application.entity.RequestKey;
 import com.appointments.dto.IAppointmentDTO;
 
 public interface IAppointmentsRepo {
@@ -17,7 +17,7 @@ public interface IAppointmentsRepo {
 	 * @param organizerName
 	 * @return
 	 */
-	public Map<UUID, IAppointmentDTO> getOrganizerRequests(String organizerName);
+	public Map<RequestKey, IAppointmentDTO> getOrganizerRequests(String organizerName);
 	
 
 	/**

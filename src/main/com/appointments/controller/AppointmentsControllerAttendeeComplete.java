@@ -23,9 +23,11 @@ public class AppointmentsControllerAttendeeComplete implements IAppointmentsCont
 	@Override
 	@PostMapping(produces = "application/json")
     public Boolean eventComplete(@RequestParam(value = "orgname") String organizerName,
-    		@RequestParam(value = "uid") UUID uid) {
+    		@RequestParam(value = "uid") UUID uid,
+    		@RequestParam(value = "sequence") int sequence
+    		) {
 
-        return model.complete(organizerName, uid);
+        return model.complete(organizerName, uid, sequence);
 	
 	}
 

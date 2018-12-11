@@ -14,6 +14,7 @@ public interface IAppointmentsModel {
 	 * @return true if request was added to the queue successfully
 	 */
 	public Boolean register(IAppointmentDTO appointment); // post
+	//TODO: return bad code if this AppointmentID is already in the system
 
 	/**
 	 * Organizer downloads a request to create an appointment
@@ -32,21 +33,24 @@ public interface IAppointmentsModel {
 	/**
 	 * Attendee downloads an updated request with appointment creation results
 	 * @param organizerName unique name of organizer; 
-	 * @param uid Unique ID of a request to create an appointment
-	 * @return AppointmentDTO request; 
+	 * @param eventID Unique ID of appointment event
+	 * @return AppointmentDTO request;
+	 * @param sequence number of request revision
+	 
 	 */
-	public AppointmentDTO answer(String organizerName, UUID uid); // get
-	
+	public AppointmentDTO answer(String organizerName, UUID eventID, int sequence); // get
+	// TODO: change to the Appointment UID from request ID 
 	
 	/**
-	 * Attendee reports that an event is complete;
+	 Attendee reports that an event is complete;
 	 * organizerName unique name of organizer; 
-	 * @param uid Unique ID of a request to create an appointment
+	 * @param organizerName 
+	 * @param eventID Unique ID of appointment event
+	 * @param sequence number of request revision
 	 * @return
 	 */
-	public Boolean complete(String organizerName, UUID uid); //post
+	public Boolean complete(String organizerName, UUID eventID, int sequence); //post
 	
-
     
 
 

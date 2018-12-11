@@ -22,32 +22,14 @@ public class AppointmentsControllerAttendeeReport implements IAppointmentsContro
 	private IAppointmentsModel model;  	//https://stackoverflow.com/a/52526618
 	
 	@Override
-	@GetMapping(value="/create", produces = "application/json")
-    public AppointmentDTO createEvent(@RequestParam(value = "orgname") String organizerName, @RequestParam(value = "uid") UUID uid) {
-		// TODO Auto-generated method stub	
-        return model.answer(organizerName, uid);
+	@GetMapping(produces = "application/json")
+    public AppointmentDTO report(@RequestParam(value = "orgname") String organizerName, 
+    		@RequestParam(value = "uid") UUID uid,
+    		@RequestParam(value = "sequence") int sequence
+    		) {
+	
+        return model.answer(organizerName, uid, sequence);
 		
-	}
-
-	@Override
-	@GetMapping(value="/read", produces = "application/json")
-    public AppointmentDTO readEvent(@RequestParam(value = "orgname") String organizerName, @RequestParam(value = "uid") UUID uid) {
-		// TODO Auto-generated method stub
-        return model.answer(organizerName, uid);
-	}
-
-	@Override
-	@GetMapping(value="/update", produces = "application/json")
-    public AppointmentDTO updateEvent(@RequestParam(value = "orgname") String organizerName, @RequestParam(value = "uid") UUID uid) {
-		// TODO Auto-generated method stub
-        return model.answer(organizerName, uid);
-	}
-
-	@Override
-	@GetMapping(value="/delete", produces = "application/json")
-    public AppointmentDTO deleteEvent(@RequestParam(value = "orgname") String organizerName, @RequestParam(value = "uid") UUID uid) {
-		// TODO Auto-generated method stub
-        return model.answer(organizerName, uid);
 	}
 
 

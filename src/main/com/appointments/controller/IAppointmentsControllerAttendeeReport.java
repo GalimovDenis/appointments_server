@@ -9,12 +9,7 @@ import com.appointments.dto.AppointmentDTO;
  * this are the endpoints attendee will reach when;
  */
 public interface IAppointmentsControllerAttendeeReport {
-    AppointmentDTO createEvent(String organiserName, UUID eventUUID);  // get
 
-    AppointmentDTO readEvent(String organiserName, UUID eventUUID); // get
-
-    AppointmentDTO updateEvent(String organiserName, UUID eventUUID);// get
-
-    AppointmentDTO deleteEvent(String organiserName, UUID eventUUID);    // get
+	AppointmentDTO report(String organiserName, UUID eventUUID, int sequence);  // get
 
 }
