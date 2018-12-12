@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"com.appointments.controller","com.appointments.model", "com.appointments.repository"})
+@ComponentScan({"com.appointments.application.controller","com.appointments.application.model", "com.appointments.application.repository"})
 public class AppointmentsServerApplication {
 
 	public static void main(String[] args) {

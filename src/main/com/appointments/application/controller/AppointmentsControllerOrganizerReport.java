@@ -1,7 +1,8 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
-import com.appointments.dto.AppointmentDTO;
-import com.appointments.model.IAppointmentsModel;
+import com.appointments.application.dto.AppointmentDTO;
+import com.appointments.application.model.IAppointmentsModel;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

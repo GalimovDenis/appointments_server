@@ -1,4 +1,4 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
 import java.util.UUID;
 

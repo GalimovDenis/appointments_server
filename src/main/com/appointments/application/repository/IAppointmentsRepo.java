@@ -1,9 +1,9 @@
-package com.appointments.repository;
+package com.appointments.application.repository;
 
 import java.util.Map;
 
+import com.appointments.application.dto.IAppointmentDTO;
 import com.appointments.application.entity.RequestKey;
-import com.appointments.dto.IAppointmentDTO;
 
 public interface IAppointmentsRepo {
 	

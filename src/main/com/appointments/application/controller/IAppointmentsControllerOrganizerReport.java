@@ -1,8 +1,8 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
 import org.springframework.http.ResponseEntity;
 
-import com.appointments.dto.AppointmentDTO;
+import com.appointments.application.dto.AppointmentDTO;
 
 /**
  * Services organiser will reach;

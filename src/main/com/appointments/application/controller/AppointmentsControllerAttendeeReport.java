@@ -1,4 +1,4 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
 import java.util.UUID;
 
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.appointments.dto.AppointmentDTO;
-import com.appointments.model.IAppointmentsModel;
+import com.appointments.application.dto.AppointmentDTO;
+import com.appointments.application.model.IAppointmentsModel;
 
 
 

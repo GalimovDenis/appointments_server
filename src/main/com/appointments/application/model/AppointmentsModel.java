@@ -1,4 +1,4 @@
-package com.appointments.model;
+package com.appointments.application.model;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,11 +7,11 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.appointments.application.dto.AppointmentDTO;
+import com.appointments.application.dto.IAppointmentDTO;
+import com.appointments.application.dto.RequestType;
 import com.appointments.application.entity.RequestKey;
-import com.appointments.dto.AppointmentDTO;
-import com.appointments.dto.IAppointmentDTO;
-import com.appointments.dto.RequestType;
-import com.appointments.repository.IAppointmentsRepo;
+import com.appointments.application.repository.IAppointmentsRepo;
 
 
 /**

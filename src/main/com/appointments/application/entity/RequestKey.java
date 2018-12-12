@@ -2,7 +2,7 @@ package com.appointments.application.entity;
 
 import java.util.UUID;
 
-import com.appointments.dto.RequestType;
+import com.appointments.application.dto.RequestType;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

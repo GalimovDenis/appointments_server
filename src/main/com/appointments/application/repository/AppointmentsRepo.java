@@ -1,4 +1,4 @@
-package com.appointments.repository;
+package com.appointments.application.repository;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Repository;
 
+import com.appointments.application.dto.IAppointmentDTO;
 import com.appointments.application.entity.RequestKey;
-import com.appointments.dto.IAppointmentDTO;
 
 @Repository("AppointmentsRepo")
 public class AppointmentsRepo implements IAppointmentsRepo {

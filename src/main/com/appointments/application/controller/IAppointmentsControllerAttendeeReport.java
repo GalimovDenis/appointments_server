@@ -1,8 +1,8 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
 import java.util.UUID;
 
-import com.appointments.dto.AppointmentDTO;
+import com.appointments.application.dto.AppointmentDTO;
 
 /**
  * Service for appointments attendee;
