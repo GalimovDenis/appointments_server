@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.appointments.application.dto.AppointmentDTO;
 import com.appointments.application.dto.IAppointmentDTO;
 import com.appointments.application.dto.RequestType;
-import com.appointments.application.entity.RequestKey;
+import com.appointments.application.entity.IRequestKey;
 import com.appointments.application.repository.IAppointmentsRepo;
 
 
@@ -41,15 +41,17 @@ public class AppointmentsModel implements IAppointmentsModel {
 	@Override
 	public AppointmentDTO pendingTo(String organizerName, RequestType type) {
 			
-		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<IRequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+		for (Entry<IRequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 			
-			if(!entry.getKey().getType().equals(type)) continue;
+			if(!entry.getKey().getRequestType().equals(type)) continue;
 			
 			AppointmentDTO request = (AppointmentDTO) entry.getValue();
+
+			if (request.isComplete()) continue;
 			
 			if (request.isResponded() == false) return request;
 		}
@@ -63,9 +65,7 @@ public class AppointmentsModel implements IAppointmentsModel {
 		
 		String organizerName = appRequest.getOrganizer();
 		
-		return appRepo.putIfAbsent(organizerName, appRequest);
-		
-		// unknown how to reflect successful report; 
+		return appRepo.putIfAbsent(organizerName, appRequest); 
 		
 	}
 
@@ -73,11 +73,11 @@ public class AppointmentsModel implements IAppointmentsModel {
 	@Override
 	public AppointmentDTO answer(String organizerName, UUID eventID, int sequence) {
 		
-		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<IRequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+		for (Entry<IRequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 			
 			if(!entry.getKey().getEventID().equals(eventID)) continue;
 			
@@ -96,20 +96,22 @@ public class AppointmentsModel implements IAppointmentsModel {
 	@Override
 	public Boolean complete(String organizerName, UUID eventID, int sequence) {
 
-		Map<RequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
+		Map<IRequestKey, IAppointmentDTO> mapOfPendingCreations = appRepo.getOrganizerRequests(organizerName);
 
 		if (mapOfPendingCreations.size() == 0) return null; 
 		
-		for (Entry<RequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
+		for (Entry<IRequestKey, IAppointmentDTO> entry : mapOfPendingCreations.entrySet()) {
 
 			if(!entry.getKey().getEventID().equals(eventID)) continue;
 			
 			if(entry.getKey().getSequence()!=sequence) continue;
 	
 			IAppointmentDTO request = entry.getValue();
+			
+			//System.out.println("Request to Complete" + request);
 					
 			request.setComplete(true);
-				
+			
 			return true; 
 						
 		}

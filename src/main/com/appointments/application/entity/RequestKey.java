@@ -13,23 +13,26 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
-public final class RequestKey implements Comparable<RequestKey> {
+public final class RequestKey implements IRequestKey {
 
+	@EqualsAndHashCode.Exclude final RequestStatus status;
 	final int sequence;
-	final RequestType type;
+	final RequestType requestType;
 	final UUID eventID;
-	@Override
 	
-	public int compareTo(RequestKey other) {
-		// TODO Auto-generated method stub
-		if(this.sequence != other.sequence) {
-			return this.sequence - other.sequence;
+	@Override
+	public int compareTo(IRequestKey other) {
+		if(!this.status.equals(other.getStatus())) {
+			return this.status.ordinal() - other.getStatus().ordinal();
 		}
-		if(!this.type.equals(other.type)) {
-			return this.type.compareTo(other.type);
+		if(this.sequence != other.getSequence()) {
+			return this.sequence - other.getSequence();
 		}
-		if(!this.eventID.equals(other.eventID)) {
-			return this.eventID.compareTo(other.eventID);
+		if(!this.requestType.equals(other.getRequestType())) {
+			return this.requestType.compareTo(other.getRequestType());
+		}
+		if(!this.eventID.equals(other.getEventID())) {
+			return this.eventID.compareTo(other.getEventID());
 		}
 		return 0;
 	}

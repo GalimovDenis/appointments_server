@@ -23,7 +23,7 @@ public class AppointmentDTO implements IAppointmentDTO {
 	/**
 	 * unique Event ID by which to search for it in the calendars
 	 */
-	private String eventId;
+	private String eventId; //TODO: to UUID 
 
 	/**
 	 * time of last change for the associated Event Must be the same across devices

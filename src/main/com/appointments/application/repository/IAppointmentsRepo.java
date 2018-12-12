@@ -1,9 +1,12 @@
 package com.appointments.application.repository;
 
 import java.util.Map;
+import java.util.UUID;
 
 import com.appointments.application.dto.IAppointmentDTO;
-import com.appointments.application.entity.RequestKey;
+import com.appointments.application.dto.RequestType;
+import com.appointments.application.entity.IRequestKey;
+import com.appointments.application.entity.RequestStatus;
 
 public interface IAppointmentsRepo {
 	
@@ -19,8 +22,12 @@ public interface IAppointmentsRepo {
 	 * @param organizerName
 	 * @return
 	 */
-	public Map<RequestKey, IAppointmentDTO> getOrganizerRequests(String organizerName);
+	public Map<IRequestKey, IAppointmentDTO> getOrganizerRequests(String organizerName);
 	
+	
+	public IAppointmentDTO getRequest(String orgName, RequestType requestType, RequestStatus requestStatus, UUID eventID, int sequence);
+
+//	public Iterable<IAppointmentDTO> getIterable(String orgName, RequestType requestType, RequestStatus requestStatus, UUID eventID, int sequence);
 
 	/**
 	 * Deletes all "Complete" requests
