@@ -1,4 +1,4 @@
-package com.appointments.dto;
+package com.appointments.application.dto;
 
 public enum RequestType {
 	CREATE{ 

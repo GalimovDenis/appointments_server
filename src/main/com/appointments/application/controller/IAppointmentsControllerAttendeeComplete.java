@@ -1,4 +1,4 @@
-package com.appointments.controller;
+package com.appointments.application.controller;
 
 import java.util.UUID;
 
@@ -8,7 +8,8 @@ import java.util.UUID;
  */
 public interface IAppointmentsControllerAttendeeComplete {
 	
-    Boolean eventComplete(String organiserName, UUID eventUUID);  // post
+    Boolean eventComplete(String organiserName, UUID eventUUID, int sequence);  // post
 
+    void clear();
 
 }
